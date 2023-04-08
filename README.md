@@ -14,7 +14,7 @@ My Web Server in C++11
 
 ## Eventloop
 - *Epool，初始化时创建Epoll对象
-- `loop`每次循环取一系列封装了就绪的Socket的Channel，
+- `loop`每次循环取一系列封装了就绪的Socket的Channel，并依次执行各Channel的callback函数，完成任务。
 
 ## Channel
 封装Socket及其事件类型，便于根据类型分配不同任务（callback）；可通过Channel注册事件到Eventloop的epoll中

@@ -1,10 +1,12 @@
-#include <iostream>
-#include <unistd.h>
 #include <string.h>
-#include "src/util.h"
+#include <unistd.h>
+
+#include <iostream>
+
 #include "src/Buffer.h"
 #include "src/InetAddress.h"
 #include "src/Socket.h"
+#include "src/util.h"
 
 using namespace std;
 
@@ -17,30 +19,30 @@ int main() {
 
     Buffer *sendBuffer = new Buffer();
     Buffer *readBuffer = new Buffer();
-    
-    while(true){
+
+    while (true) {
         sendBuffer->getline();
         ssize_t write_bytes = write(sockfd, sendBuffer->c_str(), sendBuffer->size());
-        if(write_bytes == -1){
+        if (write_bytes == -1) {
             printf("socket already disconnected, can't write any more!\n");
             break;
         }
         int already_read = 0;
-        char buf[1024];    //这个buf大小无所谓
-        while(true){
+        char buf[1024];  // 这个buf大小无所谓
+        while (true) {
             bzero(&buf, sizeof(buf));
             ssize_t read_bytes = read(sockfd, buf, sizeof(buf));
-            if(read_bytes > 0){
+            if (read_bytes > 0) {
                 readBuffer->append(buf, read_bytes);
                 already_read += read_bytes;
-            } else if(read_bytes == 0){         //EOF
+            } else if (read_bytes == 0) {  // EOF
                 printf("server disconnected!\n");
                 exit(EXIT_SUCCESS);
             }
-            if(already_read >= sendBuffer->size()){
+            if (already_read >= sendBuffer->size()) {
                 printf("message from server: %s\n", readBuffer->c_str());
                 break;
-            } 
+            }
         }
         readBuffer->clear();
     }
