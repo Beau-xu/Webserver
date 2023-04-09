@@ -1,31 +1,46 @@
+/**
+ * @file Channel.h
+ * @author 冯岳松 (yuesong-feng@foxmail.com)
+ * @brief
+ * @version 0.1
+ * @date 2022-01-04
+ *
+ * @copyright Copyright (冯岳松) 2022
+ *
+ */
 #pragma once
-#include <sys/epoll.h>
+#include "Macros.h"
+
 #include <functional>
+
+class Socket;
 class EventLoop;
-class Channel
-{
-private:
-    EventLoop *loop;
-    int fd;
-    uint32_t events;
-    uint32_t revents;
-    bool inEpoll;
-    std::function<void()> callback;
-public:
-    Channel(EventLoop *_loop, int _fd);
-    ~Channel();
+class Channel {
+ public:
+  Channel(EventLoop *loop, int fd);
+  ~Channel();
 
-    void handleEvent();
-    void enableReading();
+  DISALLOW_COPY_AND_MOVE(Channel);
 
-    int getFd();
-    uint32_t getEvents();
-    uint32_t getRevents();
-    bool getInEpoll();
-    void setInEpoll();
+  void HandleEvent();
+  void EnableRead();
 
-    // void setEvents(uint32_t);
-    void setRevents(uint32_t);
-    void setCallback(std::function<void()>);
+  int GetFd();
+  uint32_t GetListenEvents();
+  uint32_t GetReadyEvents();
+  bool GetInEpoll();
+  void SetInEpoll(bool in = true);
+  void UseET();
+
+  void SetReadyEvents(uint32_t ev);
+  void SetReadCallback(std::function<void()> const &callback);
+
+ private:
+  EventLoop *loop_;
+  int fd_;
+  uint32_t listen_events_;
+  uint32_t ready_events_;
+  bool in_epoll_;
+  std::function<void()> read_callback_;
+  std::function<void()> write_callback_;
 };
-

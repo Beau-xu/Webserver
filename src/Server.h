@@ -1,23 +1,37 @@
+/**
+ * @file Server.h
+ * @author 冯岳松 (yuesong-feng@foxmail.com)
+ * @brief
+ * @version 0.1
+ * @date 2022-01-04
+ *
+ * @copyright Copyright (冯岳松) 2022
+ *
+ */
 #pragma once
+#include "Macros.h"
 
 #include <map>
+#include <vector>
 class EventLoop;
 class Socket;
 class Acceptor;
 class Connection;
-class Server
-{
-private:
-    EventLoop *loop;
-    Acceptor *acceptor;
-    std::map<int, Connection*> connections;
-public:
-    Server(EventLoop*);
-    ~Server();
+class ThreadPool;
+class Server {
+ private:
+  EventLoop *main_reactor_;
+  Acceptor *acceptor_;
+  std::map<int, Connection *> connections_;
+  std::vector<EventLoop *> sub_reactors_;
+  ThreadPool *thread_pool_;
 
-    void handleReadEvent(int);
-    void newConnection(Socket *sock);
-    void deleteConnection(Socket *sock);
+ public:
+  explicit Server(EventLoop *loop);
+  ~Server();
+
+  DISALLOW_COPY_AND_MOVE(Server);
+
+  void NewConnection(Socket *sock);
+  void DeleteConnection(int sockfd);
 };
-
-

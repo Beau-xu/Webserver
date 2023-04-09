@@ -34,12 +34,12 @@ My Web Server in C++11
 - 初始化时创建Socket、Channel、设置（客户端的）callback，callback为Connection的成员函数。
 - 通过Channel分发到epoll，该Channel的事件处理函数handleEvent()会调用Connection中的事件处理函数来响应客户端请求
 
-## Server
-- 初始化时创建Acceptor，设置其callback：`Server::newConnection`成员函数，即Acceptor的任务
-- 持有Acceptor指针
-- 持有全部客户端的连接（Connection），以`map<int, Connection*>`形式保留fd到Connection对象的映射
-
 ## ThreadPool
 - `mutex`线程互斥访问任务队列
 - `conditon_variable`线程不会轮询任务队列是否为空，而是任务队列有任务时通知全体线程。
 - 析构函数最后`join()`子线程，等待子线程全部结束，再继续析构线程池。
+
+## Server
+- 初始化时创建Acceptor，设置其callback：`Server::newConnection`成员函数，即Acceptor的任务
+- 持有Acceptor指针
+- 持有全部客户端的连接（Connection），以`map<int, Connection*>`形式保留fd到Connection对象的映射

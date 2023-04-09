@@ -2,6 +2,7 @@
 temp.cpp
 build/
 .vscode/
+src/
 
 # Prerequisites
 *.d

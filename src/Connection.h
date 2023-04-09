@@ -1,23 +1,36 @@
+/**
+ * @file Connection.h
+ * @author 冯岳松 (yuesong-feng@foxmail.com)
+ * @brief
+ * @version 0.1
+ * @date 2022-01-04
+ *
+ * @copyright Copyright (冯岳松) 2022
+ *
+ */
 #pragma once
+#include "Macros.h"
+
 #include <functional>
-#include <string>
+
 class EventLoop;
 class Socket;
 class Channel;
 class Buffer;
 class Connection {
-   private:
-    EventLoop *loop;
-    Socket *sock;
-    Channel *channel;
-    std::function<void(Socket *)> deleteConnectionCallback;
-    std::string *inBuffer;
-    Buffer *readBuffer;
+ public:
+  Connection(EventLoop *loop, Socket *sock);
+  ~Connection();
+  DISALLOW_COPY_AND_MOVE(Connection);
 
-   public:
-    Connection(EventLoop *_loop, Socket *_sock);
-    ~Connection();
+  void Echo(int sockfd);
+  void SetDeleteConnectionCallback(std::function<void(int)> const &callback);
+  void Send(int sockfd);
 
-    void echo(int sockfd);
-    void setDeleteConnectionCallback(std::function<void(Socket *)>);
+ private:
+  EventLoop *loop_;
+  Socket *sock_;
+  Channel *channel_;
+  std::function<void(int)> delete_connectioin_callback_;
+  Buffer *read_buffer_;
 };
