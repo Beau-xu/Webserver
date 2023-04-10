@@ -174,9 +174,7 @@ bool HttpRequest::userVerify(const std::string& name, const std::string& pwd, bo
     assert(sql);
 
     bool flag = false;
-    unsigned int j = 0;
     char order[256] = {0};
-    MYSQL_FIELD* fields = nullptr;
     MYSQL_RES* res = nullptr;
 
     if (!isLogin) {
@@ -192,8 +190,6 @@ bool HttpRequest::userVerify(const std::string& name, const std::string& pwd, bo
         return false;
     }
     res = mysql_store_result(sql);
-    j = mysql_num_fields(res);
-    fields = mysql_fetch_fields(res);
 
     while (MYSQL_ROW row = mysql_fetch_row(res)) {      // 表中存在用户名
         LOG_DEBUG("MYSQL ROW: %s %s", row[0], row[1]);

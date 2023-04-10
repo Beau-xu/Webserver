@@ -44,13 +44,15 @@ int HttpConn::getPort() const { return addr_.sin_port; }
 
 ssize_t HttpConn::readFd(int* saveErrno) {
     char buf[2048];
-    ssize_t len = -1;
+    ssize_t len;
     do {
         memset(&buf, 0, sizeof(buf));
         len = read(fd_, buf, sizeof(buf));
-        *saveErrno = errno;
         if (errno == EINTR && len == -1) continue;
-        if (len <= 0) break;
+        if (len <= 0) {
+            *saveErrno = errno;
+            break;
+        }
         readBuff_.append(buf, len);
     } while (isET);
     return len;
@@ -73,7 +75,7 @@ ssize_t HttpConn::writeFd(int* saveErrno) {
         } else {
             iov_[0].iov_base = (uint8_t*)iov_[0].iov_base + len;
             iov_[0].iov_len -= len;
-            writeBuff_.substr(len);
+            writeBuff_.replace(0, len, "");
         }
     } while (isET || toWriteBytes() > 10240);
     return len;

@@ -2,6 +2,8 @@
 
 #include <thread>
 
+SqlConnPool::SqlConnPool() {}
+
 SqlConnPool* SqlConnPool::instance() {
     static SqlConnPool connPool;
     return &connPool;

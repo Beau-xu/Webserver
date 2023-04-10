@@ -8,7 +8,8 @@
 
 class ThreadPool {
    public:
-    explicit ThreadPool(int threadCount = 8);
+    explicit ThreadPool(int threadCount);
+    ThreadPool() : ThreadPool(8) {}
     ThreadPool(const ThreadPool&) = delete;
     ThreadPool(ThreadPool&&) = default;
     ~ThreadPool();
@@ -29,10 +30,10 @@ class ThreadPool {
 template <class F>
 void ThreadPool::addTask(F&& task) {
     {
-        std::lock_guard<std::mutex> locker(pool_->mtx);
-        pool_->tasks.emplace(std::forward<F>(task));
+        std::lock_guard<std::mutex> locker(mtx_);
+        tasks_.emplace(std::forward<F>(task));
     }
-    pool_->cond.notify_one();
+    condVar_.notify_one();
 }
 
 #endif  // THREADPOOL_H

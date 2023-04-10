@@ -2,7 +2,11 @@
 temp.cpp
 build/
 .vscode/
-src/
+singleThread/
+bin/
+webbench-1.5/
+resources/
+CmakeLists_backup.txt
 
 # Prerequisites
 *.d

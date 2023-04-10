@@ -118,7 +118,7 @@ void Log::write(int level, const char* format, ...) {
         buff_.append("-");
         buff_.append(std::to_string(t.tm_mon + 1));
         buff_.append("-");
-        buff_.append(std::to_string( t.tm_mday));
+        buff_.append(std::to_string(t.tm_mday));
         buff_.append(" ");
         buff_.append(std::to_string(t.tm_hour));
         buff_.append(":");
@@ -132,7 +132,7 @@ void Log::write(int level, const char* format, ...) {
         AppendLogLevelTitle_(level);
 
         va_start(vaList, format);
-        vsprintf(&buff_[buff_.size()-1], format, vaList);
+        vsprintf(&buff_[buff_.size() - 1], format, vaList);
         va_end(vaList);
 
         buff_.append("\n\0");
