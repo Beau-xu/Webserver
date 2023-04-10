@@ -18,13 +18,10 @@ class ThreadPool {
     void addTask(F&& task);
 
    private:
-    // struct Pool {
     std::mutex mtx_;
     std::condition_variable condVar_;
     std::queue<std::function<void()>> tasks_;
     bool isClosed_;
-    // };
-    // std::shared_ptr<Pool> pool_;
 };
 
 template <class F>

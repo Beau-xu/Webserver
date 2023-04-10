@@ -2,28 +2,23 @@
 #define SERVER_H
 
 #include <arpa/inet.h>
-#include <assert.h>
-#include <errno.h>
-#include <fcntl.h>
 #include <netinet/in.h>
-#include <sys/socket.h>
-#include <unistd.h>  // close()
 
 #include <unordered_map>
 
 #include "../epoller/epoller.h"
+#include "../heaptimer/heaptimer.h"
 #include "../http/httpconn.h"
 #include "../log/log.h"
 #include "../sqlconn/sqlconn.h"
 #include "../sqlconn/sqlconnpool.h"
 #include "../threadpool/threadpool.h"
-#include "../heaptimer/heaptimer.h"
 
 class Server {
    public:
-    Server(int port, int trigMode, int timeoutMS, bool OptLinger, int sqlPort,
-              const char* sqlUser, const char* sqlPwd, const char* dbName, int connPoolNum,
-              int threadNum, bool openLog, int logLevel, int logQueSize);
+    Server(int port, int trigMode, int timeoutMS, bool OptLinger, int sqlPort, const char* sqlUser,
+           const char* sqlPwd, const char* dbName, int connPoolNum, int threadNum, bool openLog,
+           int logLevel, int logQueSize);
     ~Server();
     void start();
 

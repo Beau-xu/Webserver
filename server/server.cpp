@@ -1,5 +1,12 @@
 #include "server.h"
 
+#include <errno.h>
+#include <fcntl.h>
+#include <sys/socket.h>
+#include <unistd.h>  // close()
+
+#include <cassert>
+
 Server::Server(int port, int trigMode, int timeoutMS, bool OptLinger, int sqlPort,
                const char* sqlUser, const char* sqlPwd, const char* dbName, int sqlConnPoolNum,
                int threadNum, bool useLog, int logLevel, int logQueSize)
@@ -212,8 +219,6 @@ bool Server::initSocket_() {
     }
 
     int optval = 1;
-    /* 端口复用 */
-    /* 只有最后一个套接字会正常接收数据。 */
     if (setsockopt(listenFd_, SOL_SOCKET, SO_REUSEADDR, (const void*)&optval, sizeof(int)) == -1) {
         LOG_ERROR("set socket setsockopt error !");
         close(listenFd_);

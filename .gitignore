@@ -1,9 +1,10 @@
 # Mine
+log/*.log
 temp.cpp
 build/
 .vscode/
 singleThread/
-bin/
+bin/log
 webbench-1.5/
 resources/
 CmakeLists_backup.txt

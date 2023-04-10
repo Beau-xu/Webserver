@@ -1,6 +1,6 @@
 #include "epoller.h"
 
-#include <assert.h>
+#include <cassert>
 #include <unistd.h>
 
 Epoller::Epoller(int maxEvent = 1024) : epFd_(epoll_create1(0)), vecEvents_(maxEvent) {

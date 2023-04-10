@@ -29,7 +29,6 @@ class HeapTimer {
     void doWork(int id);
     void clear();
     void tick();
-    // void pop();
     int getNextTick();
 
    private:

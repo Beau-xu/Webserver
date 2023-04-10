@@ -1,17 +1,14 @@
 #ifndef EPOLLER_H
 #define EPOLLER_H
 
-#include <sys/epoll.h> //epoll_ctl()
-// #include <fcntl.h>  // fcntl()
-// #include <unistd.h> // close()
-// #include <assert.h> // close()
+#include <sys/epoll.h>
+
 #include <vector>
-// #include <errno.h>
 
 class Epoller {
-public:
+   public:
     explicit Epoller(int maxEvent);
-    Epoller(): Epoller(1024) {}
+    Epoller() : Epoller(1024) {}
     Epoller(const Epoller&) = delete;
     ~Epoller();
 
@@ -22,9 +19,9 @@ public:
     int getEventFd(size_t i) const;
     uint32_t getEvents(size_t i) const;
 
-private:
+   private:
     int epFd_;
     std::vector<struct epoll_event> vecEvents_;
 };
 
-#endif //EPOLLER_H
+#endif  // EPOLLER_H

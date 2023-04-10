@@ -4,6 +4,8 @@
 
 SqlConnPool::SqlConnPool() {}
 
+SqlConnPool::~SqlConnPool() { closePool(); }
+
 SqlConnPool* SqlConnPool::instance() {
     static SqlConnPool connPool;
     return &connPool;
@@ -25,7 +27,6 @@ void SqlConnPool::init(const char* host, int port, const char* user, const char*
         }
         queConn_.push(sql);
     }
-    // max_conn_ = connSize;
 }
 
 MYSQL* SqlConnPool::getConn() {
@@ -59,4 +60,3 @@ int SqlConnPool::getFreeCount() {
     return queConn_.size();
 }
 
-SqlConnPool::~SqlConnPool() { closePool(); }

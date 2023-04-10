@@ -90,11 +90,6 @@ void HeapTimer::tick() {  // 清除超时结点
     }
 }
 
-// void HeapTimer::pop() {
-//     assert(!heap_.empty());
-//     del_(0);
-// }
-
 void HeapTimer::clear() {
     ref_.clear();
     heap_.clear();
