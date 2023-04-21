@@ -191,7 +191,8 @@ bool HttpRequest::userVerify(const std::string& name, const std::string& pwd, bo
     }
     res = mysql_store_result(sql);
 
-    while (MYSQL_ROW row = mysql_fetch_row(res)) {      // 表中存在用户名
+    // 表中存在用户名，如果是登录则检查密码，否则用户名存在，须重新选择用户名
+    while (MYSQL_ROW row = mysql_fetch_row(res)) {
         LOG_DEBUG("MYSQL ROW: %s %s", row[0], row[1]);
         std::string password(row[1]);
         if (isLogin) {  // 登录
@@ -208,11 +209,11 @@ bool HttpRequest::userVerify(const std::string& name, const std::string& pwd, bo
     }
     mysql_free_result(res);
 
-    /* 注册，且用户名未被使用*/
+    /* 用户名未被使用，进行注册*/
     if (!isLogin && flag == true) {
         LOG_DEBUG("regirster!");
         bzero(order, 256);
-        snprintf(order, 256, "INSERT INTO user(username, password) VALUES('%s','%s')", name.c_str(),
+        snprintf(order, 256, "INSERT INTO user(username, password) VALUES ('%s','%s')", name.c_str(),
                  pwd.c_str());
         LOG_DEBUG("%s", order);
         if (mysql_query(sql, order)) {

@@ -81,7 +81,7 @@ ssize_t HttpConn::writeFd(int* saveErrno) {
     return len;
 }
 
-bool HttpConn::process() {
+bool HttpConn::process() {  // 生成 response
     request_.init();
     if (readBuff_.size() <= 0) {
         return false;
